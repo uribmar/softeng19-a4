@@ -1,14 +1,27 @@
+import pytest
+from pathlib import Path
 from pmgr.project import Project, TaskException
 
-#FIXME don't know if we need to test the functions in main or not
-#from pmgr.__main__ import show, add, remove
+@pytest.fixture(scope="function")
+def initialize_project():
+    proj = Project("proj")
+    yield proj
+    dirpath = Path.cwd() / ".projects"
+    filepath = dirpath / "proj.txt"
+    filepath.unlink()
+    dirpath.rmdir()
+    del proj
+    del filepath
+    del dirpath
+
+def test_project_init(initialize_project):
+    proj = initialize_project
+    assert(proj.name == "proj")
 
 #TODO
-def test_project_init():
-    pass
-
-#TODO
-def test_project_add():
+def test_project_add(initialize_project):
+    proj = initialize_project
+    print(proj.name)
     pass
 
 #TODO
